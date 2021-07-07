@@ -1,0 +1,103 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>TH-AI-Farmers</title>
+  <meta name="description" content="TH-AI-Farmers">
+  <meta name="author" content="SitePoint">
+
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.js" type="text/javascript"></script>
+  <script src="dash_scripts.js"></script>
+</head>
+
+<body>
+    
+    <header><h1 class="title">Dashboard</h1></header>
+    <div class="main">
+        <div class="left">
+            menu
+            <a href="index.html"><div class="pageslt">Dashboard</div></a>
+            <a href="control.html"><div class="pageslt">Control</div></a>
+            <a href="graph.html"><div class="pageslt">Graph</div></a>
+        </div>
+        <div class="middle">
+            <h1 class="dashboard_title">Parameters</h1>
+            <div class="dashboard_content">
+                
+                <div class="card">
+                    <h1>Temperature</h1>
+                    <h1 id="p01">0</h1>
+                </div>
+                <div class="card">
+                    <h1>Humidity</h1>
+                    <h1 id="p02">0</h1>
+                </div>
+                <div class="card">
+                    <h1>Light</h1>
+                    <h1 id="p03">0</h1>
+                </div>
+                <div class="card">
+                    <h1>Moisture</h1>
+                    <h1 id="p04">0</h1>
+                </div>
+                <div class="card">
+                    <h1>Pressure</h1>
+                    <h1 id="p05">0</h1>
+                </div>
+                
+            </div>
+
+            <h1 class="dashboard_title">Output Status</h1>
+            <div class="dashboard_content">
+                
+                <div class="card output">
+                    <h1>Fans</h1>
+                    <h1 id="c01">ON</h1>
+                </div>
+                <div class="card output">
+                    <h1>Fog</h1>
+                    <h1 id="c02">OFF</h1>
+                </div>
+                <div class="card output">
+                    <h1>LED</h1>
+                    <h1 id="c03">OFF</h1>
+                </div>
+                <div class="card output">
+                    <h1>Pump</h1>
+                    <h1 id="c04">Auto</h1>
+                </div>
+            </div>
+
+            <h1 class="dashboard_title">Camera</h1>
+            <div class="dashboard_content" style="display: flex; flex-direction: column;" >
+                
+                <div style="display: flex; flex-direction: row; justify-content: center;">
+                    <div id='maincam' style="width: 720px; height: 480px; background-color: darkgrey;">                    
+
+                    </div>
+                    <button onclick="showCam()" style="margin: 10px;">Show CAM</button>
+                </div>
+
+
+                <div style="display: flex; flex-direction: row; margin: 10px auto;">
+                    <div id='cam1' style="width: 360px; height: 240px; background-color: darkgrey;">
+
+                    </div>
+                    <button onclick="Cam1()" style="margin: 5px;">Show CAM</button>
+                    
+                    <div id='cam2' style="width: 360px; height: 240px; background-color: darkgrey;">
+
+                    </div>
+                    <button onclick="Cam2()" style="margin: 5px;">Show CAM</button>
+                </div>
+
+            </div>
+            <button onclick="cikcik()">XX</button>
+        </div>
+    </div>
+
+</body>
+</html>

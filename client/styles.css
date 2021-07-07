@@ -1,0 +1,190 @@
+* { margin: 0; padding: 0;}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+header {
+    text-align: center;
+    line-height: 100px;
+    height: 100px;
+    background-color: aqua;
+}
+
+h2 {
+    font-size: 16px;
+}
+
+button {
+    margin: 5px 0;
+    padding: 5px;
+    width: 80px;
+}
+
+.title {
+    margin: auto;
+}
+
+.main {
+    display: flex;
+    border: 1px dashed black;
+}
+
+.middle {
+    flex: 8;
+    display: flex;
+    flex-direction: column;
+    border: 1px dashed black;
+}
+
+.dashboard_title {
+    text-align: center; 
+    margin: 10px 0px;
+}
+
+
+.dashboard_content{
+    display: flex;
+    flex-wrap: wrap;
+    border: 1px dashed black;
+    justify-content: center;
+}
+
+.card {
+    background-color: lightyellow;
+    border: 1px solid black;
+    width: 400px;
+    height: 180px;
+    margin: 5px;
+    border-radius: 5px;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+
+}
+
+.card>h1{
+    text-align: center;
+    margin-top: 10px;
+}
+
+.output {
+    background-color:lightskyblue;
+}
+
+.camera {
+    border: 1px solid black;
+}
+
+.para {
+    display: flex;
+    background-color: lightblue;
+    margin: 10px;
+    padding: 0 5px;
+    height: 150px;
+}
+
+.hl:hover {
+    background-color: yellow;
+}
+
+.aut {
+    background-color: rgba(255,0,0,.25);
+    text-align: center;
+    border: solid 1px;
+    height: 90%;
+    width: 95%;
+    border-radius: 5px;
+    margin: 5px auto;
+}
+
+.sld {
+    width: 90%;
+    margin: 10px;
+}
+
+.man {
+    background-color: rgba(0,255,0,.25);
+    text-align: center;
+
+    border: solid 1px;
+    height: 90%;
+    width: 95%;
+    border-radius: 5px;
+    margin: 5px auto;
+}
+
+.tim {
+    background-color: rgba(0,0,255,.25);
+    border: solid 1px;
+    height: 90%;
+    width: 95%;
+    border-radius: 5px;
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+    margin: 5px auto;
+}
+
+.box {
+    width: 33%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    flex: 1;
+    border: solid 1px;
+}
+
+.mON {
+    width: 250px;
+    height: 100px;
+}
+
+.para>*{
+    margin: auto 5px;
+}
+
+.setmode {
+    background-color: plum;
+    text-align: center;
+    height: 120px;
+    width: 240px;
+    flex: 1;
+    border-radius: 5px;
+}
+
+.control {
+    background-color: greenyellow;
+    height: 120px;
+    flex: 10;
+    border-radius: 5px;
+    margin: auto;
+    
+}
+
+.value {
+    background-color: plum;
+    text-align: center;
+    height: 120px;
+    width: 150px;
+    flex: 1;
+    border-radius: 5px;
+}
+
+
+
+
+.left {
+    text-align: center;
+    flex: 1;
+}
+
+
+.pageslt {
+    border-style: solid;
+    margin-top: 5px;
+}
+
+.pageslt:hover {
+    background-color: burlywood;
+}
+
