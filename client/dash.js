@@ -2,7 +2,7 @@ const reconnectTimeout = 2000;
 //const host="broker.hivemq.com"; //change this
 //const port=8000;
 const host="test.mosquitto.org";
-const port=8883;
+const port=8081;
 
 let ctrl;
 let data;
