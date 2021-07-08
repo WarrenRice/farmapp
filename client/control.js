@@ -23,7 +23,7 @@ function setup() {
     for (let i = 0; i <4; i++){
         //Create Div for control Bar
         let dv = createDiv();
-        p = createP(paralist[i]); p.parent('#mid_id'); //create P as name parameter and parent to #middle_id
+        let p = createP(paralist[i]); p.parent('#mid_id'); //create P as name parameter and parent to #middle_id
         p.style('text-align', 'center');
         dv.class('para');
         dv.parent('#mid_id');

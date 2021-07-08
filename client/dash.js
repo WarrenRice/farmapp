@@ -18,7 +18,7 @@ function onFailure(message) {
 }
 
 function onMessageArrived(message) {
-  m = message.payloadString;
+  let m = message.payloadString;
   let out_msg = "Message recieved :" + message.payloadString + "</br>";
   out_msg = out_msg + "Message Topic :" + message.destinationName;
   if (message.destinationName === "DeviceStatus") {
