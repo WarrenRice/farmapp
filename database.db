@@ -488,3 +488,5 @@
 {"temperature":26,"humidity":47,"light":11.67,"water":0,"pressure":100632,"timestamp":1625679202562,"_id":"zZPurV3R1zQNulQx"}
 {"temperature":26,"humidity":47,"light":13.33,"water":0,"pressure":100658,"timestamp":1625721835410,"_id":"3HAlMwuEJdI7drTH"}
 {"temperature":26,"humidity":53,"light":13.33,"water":0,"pressure":100644,"timestamp":1625722435416,"_id":"BQ2cQS0zyPxmzd5U"}
+{"temperature":27,"humidity":60,"light":13.33,"water":0,"pressure":100632,"timestamp":1625723035426,"_id":"u2hvGvA34KW4GqRi"}
+{"temperature":27,"humidity":49,"light":13.33,"water":0,"pressure":100609,"timestamp":1625723635427,"_id":"5EJxPuKOMF1X9dmb"}
