@@ -145,7 +145,7 @@ const reconnectTimeout = 2000;
 //const host="broker.hivemq.com"; //change this
 //const port=8000;
 const host="test.mosquitto.org";
-const port=8081;
+const port=8883;
 
 function onConnect() {
     console.log("onConnected");
@@ -158,7 +158,7 @@ function onFailure(message) {
 }
 
 function onMessageArrived(message) {
-    m = message.payloadString;
+    let m = message.payloadString;
     let out_msg = "Message recieved :"+message.payloadString+"</br>";
     out_msg = out_msg+"Message Topic :"+message.destinationName;
     if (message.destinationName === "DeviceStatus") {
@@ -188,7 +188,8 @@ function onMessageArrived(message) {
 function MQTTconnect() {
     console.log("connecting to "+ host +" "+ port);
     const mqtt = new Paho.MQTT.Client(host,port,"clientjsx");
-    var options = { //useSSL:true,
+    var options = { 
+        useSSL:true,
         timeout: 3,
         onSuccess: onConnect,
         onFailure: onFailure,

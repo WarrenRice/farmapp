@@ -2,7 +2,7 @@ const reconnectTimeout = 2000;
 //const host="broker.hivemq.com"; //change this
 //const port=8000;
 const host="test.mosquitto.org";
-const port=8081;
+const port=8883;
 
 let ctrl;
 let data;
@@ -62,7 +62,7 @@ function MQTTconnect() {
 console.log("connecting to " + host + " " + port);
 const mqtt = new Paho.MQTT.Client(host, port, "clientjsx");
 var options = {
-  //useSSL:true,
+  useSSL:true,
   timeout: 3,
   onSuccess: onConnect,
   onFailure: onFailure
