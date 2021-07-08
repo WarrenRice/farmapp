@@ -13,6 +13,7 @@ let ins = [];
 let ends = [];
 
 let ctrl
+ctrl = "11111111"
 let data
 
 let paralist = ['Temperature','Humidity','Light','Water']
@@ -145,7 +146,7 @@ const reconnectTimeout = 2000;
 //const host="broker.hivemq.com"; //change this
 //const port=8000;
 const host="test.mosquitto.org";
-const port=8883;
+const port=8081;
 
 function onConnect() {
     console.log("onConnected");
@@ -200,7 +201,8 @@ function MQTTconnect() {
 
 console.log("connecting to "+ host +" "+ port);
 const mqtt = new Paho.MQTT.Client(host,port,"clientjsx");
-var options = { //useSSL:true,
+var options = { 
+    useSSL:true,
     timeout: 3,
     onSuccess: onConnect,
     onFailure: onFailure,
