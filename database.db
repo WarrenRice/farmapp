@@ -372,6 +372,7 @@
 {"temperature":26,"humidity":48,"light":15,"water":0,"pressure":100432,"timestamp":1625643031573,"_id":"WpD8FB23p5Ro5G5i"}
 {"temperature":25,"humidity":52,"light":12.5,"water":0,"pressure":100706,"timestamp":1625618863620,"_id":"WuArLYkTKch4IeTO"}
 {"temperature":25,"humidity":51,"light":12.5,"water":0,"pressure":100715,"timestamp":1625619579548,"_id":"X212SRKxznVrVFjk"}
+{"temperature":27,"humidity":45,"light":13.33,"water":0,"pressure":100706,"timestamp":1625719176462,"_id":"XDxynT48FXfLlt4V"}
 {"temperature":26,"humidity":47,"light":13.33,"water":0,"pressure":100399,"timestamp":1625645091964,"_id":"XI11Rzmdytgbanin"}
 {"temperature":26,"humidity":46,"light":13.33,"water":0,"pressure":100360,"timestamp":1625649045153,"_id":"XJaInr3knnedVKsa"}
 {"temperature":30,"humidity":55,"light":11.67,"water":0,"pressure":100517,"timestamp":1625658800872,"_id":"XjWMxkpAUA6oxbgp"}
@@ -483,4 +484,4 @@
 {"temperature":31,"humidity":64,"light":11.67,"water":0,"pressure":100489,"timestamp":1625657600856,"_id":"zIg1bDwlkGX4w7Ax"}
 {"temperature":26,"humidity":47,"light":11.67,"water":0,"pressure":100632,"timestamp":1625666000950,"_id":"zPbu7B5vAJiUvT21"}
 {"temperature":26,"humidity":47,"light":11.67,"water":0,"pressure":100632,"timestamp":1625679202562,"_id":"zZPurV3R1zQNulQx"}
-{"temperature":27,"humidity":45,"light":13.33,"water":0,"pressure":100706,"timestamp":1625719176462,"_id":"XDxynT48FXfLlt4V"}
+{"temperature":26,"humidity":45,"light":13.33,"water":0,"pressure":100697,"timestamp":1625719825079,"_id":"BUef4AQJ1nntIV5x"}
