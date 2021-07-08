@@ -142,8 +142,10 @@ function setTime(){
 
 //////////MQTT//////////////
 const reconnectTimeout = 2000;
-const host="broker.hivemq.com"; //change this
-const port=8000;
+//const host="broker.hivemq.com"; //change this
+//const port=8000;
+const host="test.mosquitto.org";
+const port=8081;
 
 function onConnect() {
     console.log("onConnected");
