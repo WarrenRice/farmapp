@@ -11,12 +11,15 @@ let sl_los = [];
 let sl_his = [];
 let sl_sets = [];
 
-let starts = [];
-let ins = [];
+let hrs = [];
+let mins = [];
+let duras = [];
+let ptimers = [];
 let ends = [];
+let timeBtns = [];
 
 let svs = [];
-let ini = [10,25,50,65];
+let ini = [1,2,3,4];
 let vals = [];
 
 let ctrl ="11111111"
@@ -68,26 +71,34 @@ function setup() {
         //Timer Mode
         let tim = createDiv(); tim.class('tim'); tim.parent(b); tims.push(tim); 
         tim.hide();   
+        //Timer Divisions
         let tim1 = createDiv(); tim1.class('box'); tim1.parent(tim); 
         let tim2 = createDiv(); tim2.class('box'); tim2.parent(tim);
         let tim3 = createDiv(); tim3.class('box'); tim3.parent(tim);
 
-        p = createP('start'); p.parent(tim1);
-        let sel = createSelect(); 
+        p = createP('start time'); p.parent(tim1);
+        let hr = createSelect(); 
         for (let j=0; j<24; j++) {
-            sel.option(`${j}:00`); 
+            hr.option(`${j}`); 
         }
-        sel.parent(tim1); starts.push(sel);
+        hr.parent(tim1); hrs.push(hr);
+
+        let min = createSelect();
+        for (let j=0; j<59; j++) {
+            min.option(`${j}`); 
+        }
+        min.parent(tim1); mins.push(min);
+        let submitd = createButton('ON'); submitd.id(`s${i}`); submitd.parent(tim1); timeBtns.push(submitd)
+        submitd.mousePressed(setTime);
 
         p = createP('duration (mins)'); p.parent(tim2);
-        let input = createInput(); input.parent(tim2); ins.push(input);
-        let submitd = createButton('SET'); submitd.id(`s${i}`); submitd.parent(tim2); 
-        submitd.mousePressed(setTime);
+        let dura = createInput(); dura.parent(tim2); duras.push(dura);
+        p = createP(''); p.parent(tim2); ptimers.push(p)      
 
         p = createP('end'); p.parent(tim3);
         let end = createP(`0:0${i}`); end.parent(tim3); ends.push(end);
 
-
+        //////Div c
         c = createDiv(); c.class('value hl'); c.parent(dv); //Div val c
         p = createP('Value'); p.parent(c); //add content to c
         let v = createP(`${i}`); v.parent(c); vals.push(v); //use i in value will update later
@@ -125,11 +136,6 @@ function toggle(){
         device_msgs[k] = 't,'    
     }
     console.log(k +" >> " +device_msgs[k])
-    // console.log(`selected mode: ${mode}`);
-    // const message = new Paho.MQTT.Message(mode);
-    // message.retained = true;
-    // message.destinationName = "DeviceMode";
-    // mqtt.send(message);
 }
 
 function onOff(){
@@ -177,6 +183,7 @@ function toggleAutoHi(){
     if(this.html() === 'OFF'){
         sl_los[k].html('OFF')
         sl_his[k].html('ON')
+
         sl_his[k].class('')
     }else{
         sl_los[k].html('ON')
@@ -185,14 +192,19 @@ function toggleAutoHi(){
 }
 function setAuto(){
     let k = this.id();  k = k.substring(1);
-    let msg
+    let out_msg
     if (sl_los[k].html() === 'OFF') {
-        msg = 'a,0,'
+        out_msg = 'a,0,'
     } else {
-        msg = 'a,1,'
+        out_msg = 'a,1,'
     }
-    msg=msg.concat(slds[k].value())
-    console.log(msg)
+    out_msg=out_msg.concat(slds[k].value())
+
+    console.log(out_msg) //pub device mode to auto
+    const message1 = new Paho.MQTT.Message(out_msg);
+    message1.retained = true;
+    message1.destinationName = mqttDeviceTopics[k];
+    mqtt.send(message1);
 }
 
 String.prototype.replaceAt = function(index, replacement) {
@@ -210,21 +222,65 @@ function setTime(){
     let k = this.id();
     k = k.substring(1);
 
-    let hr = starts[k].value();
-    hr = parseInt(hr.slice(0, -3));
+    let out_msg = 't,';
 
-    hr = hr + parseInt(ins[k].value()/60);
-
-    console.log(hr);
-    console.log(ins[k].value()%60);
-
-    if (ins[k].value()%60 < 10) {
-        ends[k].html(`${hr}:0${parseInt(ins[k].value()%60)}`);
+    if (this.html() === 'OFF') {
+        this.html('ON')
+        out_msg = out_msg.concat(1).concat(',')
     } else {
-        ends[k].html(`${hr}:${parseInt(ins[k].value()%60)}`);
+        this.html('OFF')
+        out_msg = out_msg.concat(0).concat(',')
     }
 
+    let hr = hrs[k].value();
+    out_msg = out_msg.concat(hr).concat(',')
+    let min = mins[k].value();
+    out_msg = out_msg.concat(min).concat(',')
+    let dur = duras[k].value();
+    dur = parseInt(dur)
+
+    if (dur >= 0) {
+        console.log(typeof(dur))
+        ptimers[k].html(this.html())
+
+        out_msg = out_msg.concat(dur)
+
+        console.log(hr);
+        console.log(min);
+        console.log(dur);
+        
+        z = hmr(hr,min,dur)
+        ends[k].html(z)
+
+        console.log(out_msg); //pub device mode to auto
+        const message1 = new Paho.MQTT.Message(out_msg);
+        message1.retained = true;
+        message1.destinationName = mqttDeviceTopics[k];
+        mqtt.send(message1);
+
+    } else {
+        ptimers[k].html('enter number')
+        //don't pub
+    }
+    
 }
+
+function hmr(h,m,r) {
+    let y = parseInt(m)+parseInt(r)
+    let x = parseInt(h)
+    if (y >= 60 ) {
+        x = x + 1;
+        y = y - 60; 
+    }
+    if (x >= 24) {
+        x = x-24
+    }
+    let z =''
+    if (y < 10) { z = x + ':0' + y} 
+    else {z = x + ':' + y}
+    return z
+}
+
 
 //////////MQTT//////////////
 const reconnectTimeout = 2000;
@@ -249,10 +305,11 @@ function onFailure(message) {
 }
 
 function onMessageArrived(message) {
-    let m = message.payloadString;
-    let out_msg = "Message recieved :"+message.payloadString+"</br>";
+    let msg_in = message.payloadString;
+    let out_msg = "Message recieved :"+msg_in+"</br>";
     out_msg = out_msg+"Message Topic :"+message.destinationName;
-    
+    const msg_Arr = msg_in.split(",")
+
     //console.log(message.destinationName)
 
     if (message.destinationName === "DeviceStatus") {
@@ -269,51 +326,57 @@ function onMessageArrived(message) {
 
     if (mqttDeviceTopics.indexOf(message.destinationName) !== -1){
         let i = mqttDeviceTopics.indexOf(message.destinationName)
-        device_msgs[i] = message.payloadString[0] + ','
-        if ( message.payloadString[0] === "m"){
+
+        console.log(i+' >> '+msg_Arr)
+
+        if ( msg_Arr[0] === "m"){
             mbtns[i].html('Manual')
             auts[i].hide();
             tims[i].hide();
             mans[i].show();
-         } else if (message.payloadString[0] === "a") {
+         } else if (msg_Arr[0] === "a") {
             mbtns[i].html('Auto')
             mans[i].hide();
             tims[i].hide();
             auts[i].show();
-         } else if (message.payloadString[0] === "t"){
+
+            //set initial auto
+            ini[i] = parseInt(msg_Arr[2])
+            slds[i].value(parseInt(msg_Arr[2]))
+            if (msg_Arr[1] === '0') {
+                sl_los[i].html('OFF')
+                sl_his[i].html('ON')
+            } else {
+                sl_los[i].html('ON')
+                sl_his[i].html('OFF')
+            }
+            
+
+
+         } else if (msg_Arr[0] === "t"){
             mbtns[i].html('Timer')
             auts[i].hide();
             mans[i].hide();
             tims[i].show(); tims[i].style('display','flex');
+
+            //set initial timers
+            if (msg_Arr[1] === '1') {
+                ptimers[i].html('ON')
+                timeBtns[i].html('ON')
+            } else {
+                ptimers[i].html('OFF')
+                timeBtns[i].html('OFF')
+            }
+
+            hrs[i].value(parseInt(msg_Arr[2]))
+            mins[i].value(parseInt(msg_Arr[3]))
+            duras[i].value(parseInt(msg_Arr[4]))
+
+            z = hmr(msg_Arr[2],msg_Arr[3],msg_Arr[4])
+            ends[i].html(z)
+
          }
     }
-
-
-
-    // if (message.destinationName === "DeviceMode") {
-    //      mode = message.payloadString;
-    //      console.log(mode);
-    //      for (let i = 0; i < 4; i++) {
-    //          if ( mode[i] === "0"){
-    //             mbtns[i].html('Manual')
-    //             auts[i].hide();
-    //             tims[i].hide();
-    //             mans[i].show();
-    //          } else if (mode[i] === "1") {
-    //             mbtns[i].html('Auto')
-    //             mans[i].hide();
-    //             tims[i].hide();
-    //             auts[i].show();
-    //          } else {
-    //             mbtns[i].html('Timer')
-    //             auts[i].hide();
-    //             mans[i].hide();
-    //             tims[i].show(); tims[i].style('display','flex');
-    //          }
-    //      }
-    //  }
-
-
 
     if (message.destinationName === "Sensors") {
         data = JSON.parse(message.payloadString);

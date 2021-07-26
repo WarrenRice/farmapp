@@ -26,7 +26,6 @@ client.on('connect', ()=> {
 
 clientB.on('connect', ()=> {
     clientB.subscribe('DeviceStatus');
-    clientB.subscribe('DeviceMode');
     console.log("ClientB has sub successfully");
 });
 
@@ -67,7 +66,8 @@ app.get('/api', (req, res) => {
         })
 
         let gdata = []
-        for (let i = list.length-144; i < list.length; i++) {
+        //data size list.length-144
+        for (let i = list.length-5; i < list.length; i++) {
             gdata.push(list[i]);
         }
         res.json(gdata);
