@@ -26,8 +26,6 @@ let data
 
 let paralist = ['Temperature','Humidity','Light','Water']
 
-const mqttDeviceTopics = ['control/d1','control/d2','control/d3','control/d4']
-
 function setup() {
     noCanvas();
     for (let i = 0; i <4; i++){
@@ -106,7 +104,7 @@ function toggle(){
         mans[k].show();
 
         //mode = mode.replaceAt(k, '0')
-        device_msgs[k] = 'm,'
+        device_msgs[k] = 'm, '
 
     } else if(this.html() == 'Manual') {
         this.html('Auto'); //<<Auto
@@ -138,24 +136,24 @@ function onOff(){
     let out_msg = ''
 
     if(this.html() === 'OFF'){
-        ctrl = ctrl.replaceAt(k, '0')
+        //ctrl = ctrl.replaceAt(k, '0')
         out_msg = device_msgs[k]+'0'
     }else{
-        ctrl = ctrl.replaceAt(k, '1')
+        //ctrl = ctrl.replaceAt(k, '1')
         out_msg = device_msgs[k]+'1'
     }
 
-    console.log(out_msg) //pub device mode to manual
-    const message1 = new Paho.MQTT.Message(out_msg);
-    message1.retained = true;
-    message1.destinationName = mqttDeviceTopics[k];
-    mqtt.send(message1);
-
-    console.log(ctrl); //pub device status
-    const message = new Paho.MQTT.Message(ctrl);
+    console.log(out_msg)
+    const message = new Paho.MQTT.Message(out_msg);
     message.retained = true;
-    message.destinationName = "DeviceStatus";
+    message.destinationName = `control/d1`;
     mqtt.send(message);
+
+    // console.log(ctrl);
+    // const message = new Paho.MQTT.Message(ctrl);
+    // message.retained = true;
+    // message.destinationName = "DeviceStatus";
+    // mqtt.send(message);
 }
 
 function toggleAutoLo(){
@@ -238,9 +236,7 @@ function onConnect() {
     mqtt.subscribe("DeviceStatus");
     mqtt.subscribe("DeviceMode");
     mqtt.subscribe("Sensors");
-    for (let i=0; i<4; i++) {
-        mqtt.subscribe(mqttDeviceTopics[i]);
-    }
+    mqtt.subscribe("control/d1");
 }
 
 function onFailure(message) {
@@ -253,7 +249,7 @@ function onMessageArrived(message) {
     let out_msg = "Message recieved :"+message.payloadString+"</br>";
     out_msg = out_msg+"Message Topic :"+message.destinationName;
     
-    //console.log(message.destinationName)
+    console.log(message.destinationName)
 
     if (message.destinationName === "DeviceStatus") {
         ctrl = message.payloadString;
@@ -267,51 +263,28 @@ function onMessageArrived(message) {
         }
     }
 
-    if (mqttDeviceTopics.indexOf(message.destinationName) !== -1){
-        let i = mqttDeviceTopics.indexOf(message.destinationName)
-        device_msgs[i] = message.payloadString[0] + ','
-        if ( message.payloadString[0] === "m"){
-            mbtns[i].html('Manual')
-            auts[i].hide();
-            tims[i].hide();
-            mans[i].show();
-         } else if (message.payloadString[0] === "a") {
-            mbtns[i].html('Auto')
-            mans[i].hide();
-            tims[i].hide();
-            auts[i].show();
-         } else if (message.payloadString[0] === "t"){
-            mbtns[i].html('Timer')
-            auts[i].hide();
-            mans[i].hide();
-            tims[i].show(); tims[i].style('display','flex');
+    if (message.destinationName === "DeviceMode") {
+         mode = message.payloadString;
+         console.log(mode);
+         for (let i = 0; i < 4; i++) {
+             if ( mode[i] === "0"){
+                mbtns[i].html('Manual')
+                auts[i].hide();
+                tims[i].hide();
+                mans[i].show();
+             } else if (mode[i] === "1") {
+                mbtns[i].html('Auto')
+                mans[i].hide();
+                tims[i].hide();
+                auts[i].show();
+             } else {
+                mbtns[i].html('Timer')
+                auts[i].hide();
+                mans[i].hide();
+                tims[i].show(); tims[i].style('display','flex');
+             }
          }
-    }
-
-
-
-    // if (message.destinationName === "DeviceMode") {
-    //      mode = message.payloadString;
-    //      console.log(mode);
-    //      for (let i = 0; i < 4; i++) {
-    //          if ( mode[i] === "0"){
-    //             mbtns[i].html('Manual')
-    //             auts[i].hide();
-    //             tims[i].hide();
-    //             mans[i].show();
-    //          } else if (mode[i] === "1") {
-    //             mbtns[i].html('Auto')
-    //             mans[i].hide();
-    //             tims[i].hide();
-    //             auts[i].show();
-    //          } else {
-    //             mbtns[i].html('Timer')
-    //             auts[i].hide();
-    //             mans[i].hide();
-    //             tims[i].show(); tims[i].style('display','flex');
-    //          }
-    //      }
-    //  }
+     }
 
 
 
