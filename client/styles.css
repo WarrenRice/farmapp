@@ -96,6 +96,16 @@ button {
     margin: 5px auto;
 }
 
+.sl_div {
+    display: flex;
+    justify-content: space-between;
+}
+
+.sl_btn {
+    font-weight: bold;
+    background-color: #eee7;
+}
+
 .sld {
     width: 90%;
     margin: 10px;

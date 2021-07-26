@@ -26,7 +26,6 @@ client.on('connect', ()=> {
 
 clientB.on('connect', ()=> {
     clientB.subscribe('DeviceStatus');
-    clientB.subscribe('DeviceMode');
     console.log("ClientB has sub successfully");
 });
 

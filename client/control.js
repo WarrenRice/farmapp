@@ -1,19 +1,27 @@
-let mbtn;
+let mbtns = [];
 let a,b,c;
 let auts = [];
 let mans = [];
 let tims = [];
+
 let mONs = [];
+
 let slds = [];
-let svs = [];
-let ini = [10,25,50,65];
-let vals = [];
+let sl_los = [];
+let sl_his = [];
+let sl_sets = [];
+
 let starts = [];
 let ins = [];
 let ends = [];
 
-let ctrl
-ctrl = "11111111"
+let svs = [];
+let ini = [10,25,50,65];
+let vals = [];
+
+
+let ctrl ="11111111"
+let mode = "0120"
 let data
 
 let paralist = ['Temperature','Humidity','Light','Water']
@@ -30,21 +38,30 @@ function setup() {
         //Create Control Session
         a = createDiv(); a.class('setmode hl'); a.parent(dv); //Div Mode box a
         //Add Botton and Botton ID
-        mbtn = createButton('Auto'); mbtn.class('md'); mbtn.id(`b${i}`); mbtn.parent(a);
-        //mbtn.mousePressed(toggle); //Trigger Fn() when press
+        let mbtn = createButton('Manual'); mbtn.class('md'); mbtn.id(`b${i}`); mbtn.parent(a);  mbtns.push(mbtn);
+        mbtn.mousePressed(toggle); //Trigger Fn() when press
 
         b = createDiv(); b.class('control hl'); b.parent(dv); //Div Control Content b
+
+        //Manual Mode
+        let man = createDiv(); man.class('man'); man.parent(b); mans.push(man); 
+        man.hide();
+        let mON = createButton('W8'); mON.id(`s${i}`); mON.class('mON'); mON.parent(man); mONs.push(mON);
+        mON.mousePressed(onOff);
+
+
         //Auto Mode
         let aut = createDiv(); aut.class('aut'); aut.parent(b); auts.push(aut);
         let sv = createP(`${i}`); sv.style('margin-top','10px'); sv.parent(aut); svs.push(sv); //sv is slide value
         let sld = createSlider(0,100,ini[i]); sld.parent(aut); sld.class('sld'); sld.id(`s${i}`); slds.push(sld);
+        const sl_ = createDiv(); sl_.class('sl_div'); sl_.parent(aut);
+        let sl_lo = createButton('OFF'); sl_lo.id(`n${i}`); sl_lo.class('sl_btn'); sl_lo.parent(sl_); sl_los.push(sl_lo);
+        let sl_set = createButton('SET'); sl_set.id(`o${i}`); sl_set.class('sl_btn'); sl_set.parent(sl_); sl_sets.push(sl_set);
+        let sl_hi = createButton('ON'); sl_hi.id(`m${i}`); sl_hi.class('sl_btn'); sl_hi.parent(sl_); sl_his.push(sl_hi);
         aut.hide()
+        sl_lo.mousePressed(toggleAutoLo); sl_hi.mousePressed(toggleAutoHi); 
+        sl_set.mousePressed(setAuto);
 
-        //Manual Mode
-        let man = createDiv(); man.class('man'); man.parent(b); mans.push(man); 
-        //man.hide();
-        let mON = createButton('W8'); mON.id(`s${i}`); mON.class('mON'); mON.parent(man); mONs.push(mON);
-        mON.mousePressed(onOff);
 
         //Timer Mode
         let tim = createDiv(); tim.class('tim'); tim.parent(b); tims.push(tim); 
@@ -80,20 +97,69 @@ function setup() {
 function toggle(){
     let k = this.id();
     k = k.substring(1);
-    if (this.html() == 'Auto') {
+
+    if (this.html() == 'Timer') {
         this.html('Manual');
-        auts[k].hide(); 
-        mans[k].show();
+        // tims[k].hide(); auts[k].hide(); 
+        // mans[k].show();
+        mode = mode.replaceAt(k, '0')
     } else if(this.html() == 'Manual') {
-        this.html('Timer');
-        mans[k].hide();
-        tims[k].show(); tims[k].style('display','flex');
-    } else {
-        this.html('Auto');
-        tims[k].hide();
-        auts[k].show(); 
+        this.html('Auto'); //<<Auto
+        // mans[k].hide(); tims[k].hide();
+        // auts[k].show();
+        mode = mode.replaceAt(k, '1')  
+    } else { 
+        this.html('Timer'); //<<Timer
+        // auts[k].hide(); mans[k].hide();
+        // tims[k].show(); tims[k].style('display','flex');
+        mode = mode.replaceAt(k, '2')    
+    }
+    console.log(`selected mode: ${mode}`);
+    const message = new Paho.MQTT.Message(mode);
+    message.retained = true;
+    message.destinationName = "DeviceMode";
+    mqtt.send(message);
+}
+
+function toggleAutoLo(){
+    let k = this.id(); 
+    k = k.substring(1); //console.log(k); console.log(typeof(k));
+
+    if(this.html() === 'OFF'){
+        sl_los[k].html('ON')
+        sl_his[k].html('OFF')
+    }else{
+        sl_los[k].html('OFF')
+        sl_his[k].html('ON')
     }
 }
+function toggleAutoHi(){
+    let k = this.id(); 
+    k = k.substring(1); //console.log(k); console.log(typeof(k));
+
+    if(this.html() === 'OFF'){
+        sl_los[k].html('OFF')
+        sl_his[k].html('ON')
+        sl_his[k].class('')
+    }else{
+        sl_los[k].html('ON')
+        sl_his[k].html('OFF')
+    }
+}
+function setAuto(){
+    let k = this.id();  k = k.substring(1);
+    let msg
+    if (sl_los[k].html() === 'OFF') {
+        msg = 'a,0,'
+    } else {
+        msg = 'a,1,'
+    }
+    msg=msg.concat(slds[k].value())
+    console.log(msg)
+}
+
+
+
 
 String.prototype.replaceAt = function(index, replacement) {
     if (index >= this.length) {
@@ -151,8 +217,11 @@ const port=8081;
 function onConnect() {
     console.log("onConnected");
     mqtt.subscribe("DeviceStatus");
+    mqtt.subscribe("DeviceMode");
     mqtt.subscribe("Sensors");
+    mqtt.subscribe("config/d1");
 }
+
 function onFailure(message) {
     console.log("Connection to Host: "+host+"Failed");
     setTimeout(MQTTconnect,reconnectTimeout);
@@ -162,6 +231,7 @@ function onMessageArrived(message) {
     let m = message.payloadString;
     let out_msg = "Message recieved :"+message.payloadString+"</br>";
     out_msg = out_msg+"Message Topic :"+message.destinationName;
+    
     if (message.destinationName === "DeviceStatus") {
         ctrl = message.payloadString;
         console.log(ctrl);
@@ -172,8 +242,32 @@ function onMessageArrived(message) {
                 mONs[i].html('ON')
             }
         }
-
     }
+
+    if (message.destinationName === "DeviceMode") {
+         mode = message.payloadString;
+         console.log(mode);
+         for (let i = 0; i < 4; i++) {
+             if ( mode[i] === "0"){
+                mbtns[i].html('Manual')
+                auts[i].hide();
+                tims[i].hide();
+                mans[i].show();
+             } else if (mode[i] === "1") {
+                mbtns[i].html('Auto')
+                mans[i].hide();
+                tims[i].hide();
+                auts[i].show();
+             } else {
+                mbtns[i].html('Timer')
+                auts[i].hide();
+                mans[i].hide();
+                tims[i].show(); tims[i].style('display','flex');
+             }
+         }
+     }
+
+
     if (message.destinationName === "Sensors") {
         data = JSON.parse(message.payloadString);
         //console.log(typeof(data));
