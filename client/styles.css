@@ -162,6 +162,10 @@ button {
     border-radius: 5px;
 }
 
+.hline {
+    display: flex;
+}
+
 .control {
     background-color: greenyellow;
     height: 120px;
@@ -198,3 +202,7 @@ button {
     background-color: burlywood;
 }
 
+input {
+    width: 80%;
+  }
+  

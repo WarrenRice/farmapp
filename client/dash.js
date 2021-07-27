@@ -82,7 +82,7 @@ function covert2text(c) {
 
 function showCam() {
   document.getElementById("maincam").innerHTML =
-    '<iframe width="720" height="480" src="https://www.youtube.com/embed/c7BqweTSfhc"></iframe>';
+    '<iframe width="720" height="480" src="http://192.168.1.108:5510/"></iframe>';
 }
 
 function Cam1() {
@@ -92,5 +92,5 @@ function Cam1() {
 
 function Cam2() {
   document.getElementById("cam2").innerHTML =
-    '<iframe width="360" height="240" src="https://www.youtube.com/embed/c7BqweTSfhc"></iframe>';
+    '<iframe width="360" height="240" src="http://irismech.thddns.net:5510"></iframe>';
 }

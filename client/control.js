@@ -14,9 +14,9 @@ let sl_sets = [];
 let hrs = [];
 let mins = [];
 let duras = [];
-let ptimers = [];
+let timerstats = [];
 let ends = [];
-let timeBtns = [];
+//let timeBtns = [];
 
 let svs = [];
 let ini = [1,2,3,4];
@@ -77,23 +77,30 @@ function setup() {
         let tim3 = createDiv(); tim3.class('box'); tim3.parent(tim);
 
         p = createP('start time'); p.parent(tim1);
+        c = createDiv(); c.class('hline'); c.parent(tim1)
+        //p = createP('Hr'); p.parent(c);
         let hr = createSelect(); 
         for (let j=0; j<24; j++) {
             hr.option(`${j}`); 
         }
-        hr.parent(tim1); hrs.push(hr);
-
+        hr.parent(c); hrs.push(hr);
+        
+        //p = createP('Min'); p.parent(c);
         let min = createSelect();
         for (let j=0; j<59; j++) {
             min.option(`${j}`); 
         }
-        min.parent(tim1); mins.push(min);
-        let submitd = createButton('ON'); submitd.id(`s${i}`); submitd.parent(tim1); timeBtns.push(submitd)
-        submitd.mousePressed(setTime);
+        min.parent(c); mins.push(min);
+
 
         p = createP('duration (mins)'); p.parent(tim2);
         let dura = createInput(); dura.parent(tim2); duras.push(dura);
-        p = createP(''); p.parent(tim2); ptimers.push(p)      
+        p = createP(''); p.parent(tim2); timerstats.push(p)
+        c = createDiv(); c.class('hline'); c.parent(tim2)
+        let submitd = createButton('ON'); submitd.id(`s${i}`); submitd.parent(c); //timeBtns.push(submitd)
+        submitd.mousePressed(setTime);
+        submitd = createButton('OFF'); submitd.id(`f${i}`); submitd.parent(c); //timeBtns.push(submitd1)
+        submitd.mousePressed(setTime);
 
         p = createP('end'); p.parent(tim3);
         let end = createP(`0:0${i}`); end.parent(tim3); ends.push(end);
@@ -190,6 +197,7 @@ function toggleAutoHi(){
         sl_his[k].html('OFF')
     }
 }
+
 function setAuto(){
     let k = this.id();  k = k.substring(1);
     let out_msg
@@ -225,11 +233,11 @@ function setTime(){
     let out_msg = 't,';
 
     if (this.html() === 'OFF') {
-        this.html('ON')
-        out_msg = out_msg.concat(1).concat(',')
-    } else {
-        this.html('OFF')
-        out_msg = out_msg.concat(0).concat(',')
+        //this.html('ON')
+        out_msg = out_msg.concat(0).concat(',') //////
+    } else { //send 'ON'
+        //this.html('OFF')
+        out_msg = out_msg.concat(1).concat(',') //////
     }
 
     let hr = hrs[k].value();
@@ -239,11 +247,11 @@ function setTime(){
     let dur = duras[k].value();
     dur = parseInt(dur)
 
-    if (dur >= 0) {
+    if (dur > 0 && dur < 1440) {
         console.log(typeof(dur))
-        ptimers[k].html(this.html())
+        timerstats[k].html(this.html())
 
-        out_msg = out_msg.concat(dur)
+        out_msg = out_msg.concat(dur).concat(',')
 
         console.log(hr);
         console.log(min);
@@ -251,6 +259,9 @@ function setTime(){
         
         z = hmr(hr,min,dur)
         ends[k].html(z)
+        z = z.replace(":",",")
+
+        out_msg = out_msg.concat(z)
 
         console.log(out_msg); //pub device mode to auto
         const message1 = new Paho.MQTT.Message(out_msg);
@@ -259,7 +270,7 @@ function setTime(){
         mqtt.send(message1);
 
     } else {
-        ptimers[k].html('enter number')
+        timerstats[k].html('enter number: 1-1439')
         //don't pub
     }
     
@@ -269,8 +280,8 @@ function hmr(h,m,r) {
     let y = parseInt(m)+parseInt(r)
     let x = parseInt(h)
     if (y >= 60 ) {
-        x = x + 1;
-        y = y - 60; 
+        x = x + Math.floor(y/60);
+        y = y%60; 
     }
     if (x >= 24) {
         x = x-24
@@ -361,11 +372,11 @@ function onMessageArrived(message) {
 
             //set initial timers
             if (msg_Arr[1] === '1') {
-                ptimers[i].html('ON')
-                timeBtns[i].html('ON')
+                timerstats[i].html('ON')
+                //timeBtns[i].html('ON')
             } else {
-                ptimers[i].html('OFF')
-                timeBtns[i].html('OFF')
+                timerstats[i].html('OFF')
+                //timeBtns[i].html('OFF')
             }
 
             hrs[i].value(parseInt(msg_Arr[2]))
