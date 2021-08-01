@@ -21,10 +21,6 @@ button {
     width: 80px;
 }
 
-.title {
-    margin: auto;
-}
-
 .main {
     display: flex;
     border: 1px dashed black;

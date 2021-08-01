@@ -9,10 +9,3 @@ git push -u origin main
 git remote add origin https://github.com/WarrenRice/farmapp.git
 git branch -M main
 git push -u origin main
-
-dms = [
-    'm,1',
-    'a,0,255,
-    't,hr,min,dura,
-    []
-]

@@ -153,9 +153,11 @@ function onOff(){
     if(this.html() === 'OFF'){
         ctrl = ctrl.replaceAt(k, '0')
         out_msg = device_msgs[k]+'0'
+        out_msg = 'm,0'
     }else{
         ctrl = ctrl.replaceAt(k, '1')
         out_msg = device_msgs[k]+'1'
+        out_msg = 'm,1'
     }
 
     console.log(out_msg) //pub device mode to manual
@@ -340,7 +342,7 @@ function onMessageArrived(message) {
 
         console.log(i+' >> '+msg_Arr)
 
-        if ( msg_Arr[0] === "m"){
+        if ( msg_Arr[0] === "m" || msg_Arr[0] === "0" ){
             mbtns[i].html('Manual')
             auts[i].hide();
             tims[i].hide();
