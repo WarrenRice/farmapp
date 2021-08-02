@@ -6,44 +6,52 @@ const port=8081;
 
 let ctrl;
 let data;
+const mqttDeviceTopics = ['control/d1','control/d2','control/d3','control/d4']
 
 function onConnect() {
   console.log("onConnected");
   mqtt.subscribe("DeviceStatus");
   mqtt.subscribe("Sensors");
+  for (let i=0; i<4; i++) {
+    mqtt.subscribe(mqttDeviceTopics[i]);
+  }
 }
+
 function onFailure(message) {
   console.log("Connection to Host: " + host + "Failed");
   setTimeout(MQTTconnect, reconnectTimeout);
 }
 
 function onMessageArrived(message) {
-  let m = message.payloadString;
-  let out_msg = "Message recieved :" + message.payloadString + "</br>";
+  let msg_in = message.payloadString;
+  let out_msg = "Message recieved :" + msg_in + "</br>";
   out_msg = out_msg + "Message Topic :" + message.destinationName;
-  if (message.destinationName === "DeviceStatus") {
-    ctrl = message.payloadString;
-    console.log(ctrl);
-    document.getElementById("c01").textContent = covert2text(ctrl[0]);
-    document.getElementById("c02").textContent = covert2text(ctrl[1]);
-    document.getElementById("c03").textContent = covert2text(ctrl[2]);
-    document.getElementById("c04").textContent = covert2text(ctrl[3]);
-  }
+  const msg_Arr = msg_in.split(",")
+
   if (message.destinationName === "Sensors") {
     data = JSON.parse(message.payloadString);
-    //console.log(typeof(data));
+
     console.log(data);
-    document.getElementById("p01").textContent = data.temperature;
-    document.getElementById("p02").textContent = data.humidity;
-    document.getElementById("p03").textContent = data.light;
-    document.getElementById("p05").textContent = data.pressure;
+    document.getElementById("p00").textContent = data.temperature + " C";
+    document.getElementById("p01").textContent = data.humidity +"%";
+    document.getElementById("p02").textContent = data.light +" lux";
+    document.getElementById("p04").textContent = data.pressure +" Pa";
     if (data.water < 300) {
-      document.getElementById("p04").textContent = "DRY";
+      document.getElementById("p03").textContent = "DRY";
     } else {
-      document.getElementById("p04").textContent = "WET";
+      document.getElementById("p03").textContent = "WET";
     }
   }
-  //console.log(out_msg);
+
+  if (mqttDeviceTopics.indexOf(message.destinationName) !== -1){
+    let i = mqttDeviceTopics.indexOf(message.destinationName)
+    console.log(msg_Arr)
+    document.getElementById(`m0${i}`).textContent = covert2text(msg_Arr[0]);
+
+    document.getElementById(`c0${i}`).textContent = covert2text(msg_Arr[1]);
+    document.getElementById(`c0${i}`).className = covert2style(msg_Arr[1])
+  }
+
 }
 
 function MQTTconnect() {
@@ -70,13 +78,25 @@ var options = {
 mqtt.onMessageArrived = onMessageArrived;
 mqtt.connect(options); //connect
 
-function covert2text(c) {
-  if (c == "1") {
-    return "OFF";
-  } else if (c == "0") {
-    return "ON";
-  } else {
+function covert2text(m) {
+  if (m == "m") {
+    return "Manual";
+  } else if (m == "a") {
     return "Auto";
+  } else if (m == "t") {
+    return "Timer";
+  } else if (m == "1") {
+    return "OFF";
+  } else if (m == "0") { 
+    return "ON";
+  }
+}
+
+function covert2style(m) {
+  if (m == "1") {
+    return "w-25 badge bg-secondary";
+  } else if (m == "0") { 
+    return "w-25 badge bg-success";
   }
 }
 

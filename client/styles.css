@@ -1,14 +1,11 @@
 * { margin: 0; padding: 0;}
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Nunito', sans-serif;
 }
 
-header {
-    text-align: center;
-    line-height: 100px;
-    height: 100px;
-    background-color: aqua;
+.my-button {
+    width: 90%;
 }
 
 h2 {
@@ -27,7 +24,7 @@ button {
 }
 
 .middle {
-    flex: 8;
+    flex: 11;
     display: flex;
     flex-direction: column;
     border: 1px dashed black;
@@ -42,11 +39,11 @@ button {
 .dashboard_content{
     display: flex;
     flex-wrap: wrap;
-    border: 1px dashed black;
     justify-content: center;
+    border-radius: 10px;
 }
 
-.card {
+.ocard {
     background-color: lightyellow;
     border: 1px solid black;
     width: 400px;
@@ -57,7 +54,7 @@ button {
 
 }
 
-.card>h1{
+.ocard>h1{
     text-align: center;
     margin-top: 10px;
 }
@@ -188,11 +185,6 @@ button {
     flex: 1;
 }
 
-
-.pageslt {
-    border-style: solid;
-    margin-top: 5px;
-}
 
 .pageslt:hover {
     background-color: burlywood;

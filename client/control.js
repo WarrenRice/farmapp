@@ -43,7 +43,7 @@ function setup() {
         //Create Control Session
         a = createDiv(); a.class('setmode hl'); a.parent(dv); //Div Mode box a
         //Add Botton and Botton ID
-        let mbtn = createButton('Manual'); mbtn.class('md'); mbtn.id(`b${i}`); mbtn.parent(a);  mbtns.push(mbtn);
+        let mbtn = createButton('Manual'); mbtn.class('md btn btn-primary my-button'); mbtn.id(`b${i}`); mbtn.parent(a);  mbtns.push(mbtn);
         mbtn.mousePressed(toggle); //Trigger Fn() when press
 
         b = createDiv(); b.class('control hl'); b.parent(dv); //Div Control Content b
@@ -305,7 +305,7 @@ const port=8081;
 function onConnect() {
     console.log("onConnected");
     mqtt.subscribe("DeviceStatus");
-    mqtt.subscribe("DeviceMode");
+    //mqtt.subscribe("DeviceMode");
     mqtt.subscribe("Sensors");
     for (let i=0; i<4; i++) {
         mqtt.subscribe(mqttDeviceTopics[i]);

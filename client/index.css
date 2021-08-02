@@ -1,0 +1,78 @@
+* { margin: 0; padding: 0;}
+
+body {
+    font-family: 'Nunito', sans-serif;
+}
+
+.my-button {
+    width: 90%;
+}
+
+.main {
+    display: flex;
+}
+
+.left {
+    text-align: center;
+    flex: 1;
+}
+
+.middle {
+    flex: 11;
+    display: flex;
+    flex-direction: column;
+
+}
+
+.dashboard_container {
+    margin: 20px 20px; 
+    background-color: rgb(200,200,200); 
+    padding: 20px 0px;
+    border-radius: 10px
+}
+
+.dashboard_title {
+    width: 80%; 
+    margin: auto; 
+    border-radius: 25px;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+}
+
+.dashboard_content{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    border-radius: 10px;
+}
+
+.ocard {
+    background-color: lightyellow;
+    border: 1px solid rgb(205, 219, 77);
+    padding: 25px;
+    width: 400px;
+    height: 180px;
+    margin: 5px;
+    border-radius: 5px;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+}
+
+.ocard>h1{
+    text-align: center;
+    margin-top: 5px;
+}
+
+.output {
+    background-color:lightskyblue;
+
+}
+
+.inshadow {
+    -moz-box-shadow:    inset 0 0 10px #000000;
+    -webkit-box-shadow: inset 0 0 10px #000000;
+    box-shadow:         inset 0 0 10px #000000;
+    background-color: rgb(200,200,200)
+}
+
+.camera {
+    border: 1px solid black;
+}
