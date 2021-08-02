@@ -1,0 +1,204 @@
+* { margin: 0; padding: 0;}
+
+body {
+    font-family: 'Nunito', sans-serif;
+}
+
+.my-button {
+    width: 100%;
+
+}
+
+h2 {
+    font-size: 16px;
+}
+
+.main {
+    display: flex;
+
+}
+
+.middle {
+    flex: 11;
+    display: flex;
+    flex-direction: column;
+
+}
+
+.paralist {
+    background-color: lightblue;
+    text-align: center;
+    margin-top: 30px;
+    padding: 10px;
+}
+
+.para {
+    display: flex;
+    background-color: lightblue;
+    height: 180px;
+    padding: 10px;
+    margin: -10px 10px;
+
+}
+
+.para>*{
+    margin: auto 5px;
+}
+
+.hl:hover {
+    background-color: yellow;
+}
+
+
+.setmode {
+    background-color: plum;
+    text-align: center;
+    height: 100%;
+    width: 240px;
+    flex: 1;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+
+.control {
+    background-color: plum;
+    height: 100%;
+    flex: 10;
+    border-radius: 5px;
+    margin: auto;
+    padding: 5px;
+}
+
+.man {
+    background-color: rgb(13,110,253);
+    text-align: center;
+    border: solid 1px;
+    height: 100%;
+    width: 100%;
+    border-radius: 5px;
+}
+.mON {
+    width: 250px;
+    height: 90%;
+    margin: 5px 0px;
+}
+
+
+
+
+.aut {
+    background-color: rgb(236, 127, 182);
+    text-align: center;
+    border: solid 1px;
+    height: 100%;
+    width: 100%;
+    border-radius: 5px;
+    display: flex;
+    flex-direction:column-reverse;
+    justify-content:space-evenly;
+}
+.aut_color {
+    background-color: rgb(218, 74, 146);
+}
+
+.sld {
+    width: 90%;
+    margin: 0px 10px;
+}
+
+.sl_div {
+    display: flex;
+    justify-content: space-evenly ;
+    margin: 15px;
+}
+
+.sl_btn {
+    font-weight: bold;
+    text-align: center;
+    width: 100px;
+}
+
+
+
+
+.tim {
+    background-color: rgb(221, 223, 154);
+    text-align: center;
+    border: solid 1px;
+    height: 100%;
+    width: 100%;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: row;
+}
+.tim_color {
+    background-color: rgb(224, 163, 83);
+}
+
+.box {
+    width: 33%;
+    height: 100%;
+    align-items: center;
+
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.dura {
+    width: 30%;
+    text-align: center;
+}
+
+.btnHgroup {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+
+
+.textCtrl {
+    margin-top: 10px;
+    
+}
+
+.textDura {
+    color: red;
+    height: 10px;
+}
+
+.value {
+    background-color: plum;
+    text-align: center;
+    height: 100%;
+    width: 150px;
+    flex: 1;
+    border-radius: 5px;
+
+    margin: auto 5px;
+    padding: 5px;
+}
+
+
+.in-value {
+    height: 100%;
+}
+
+.left {
+    text-align: center;
+    flex: 1;
+}
+
+
+.pageslt:hover {
+    background-color: burlywood;
+}
+
+input {
+    width: 80%;
+  }
+  

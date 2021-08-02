@@ -27,6 +27,8 @@ let mode = "0120"
 let device_msgs =['','','','']
 let data
 
+const maxs = [50,100,1000,2000]
+
 let paralist = ['Temperature','Humidity','Light','Water']
 
 const mqttDeviceTopics = ['control/d1','control/d2','control/d3','control/d4']
@@ -35,8 +37,9 @@ function setup() {
     noCanvas();
     for (let i = 0; i <4; i++){
         //Create Div for control Bar
+
         let p = createDiv(paralist[i]); p.parent('#mid_id'); //create P as name parameter and parent to #middle_id
-        p.class('paralist w-25 mx-auto rounded-top shadow'); 
+        p.class('paralist w-25 mx-auto rounded-top shadow h4'); 
 
         let dv = createDiv(); dv.class('para rounded shadow');
         dv.parent('#mid_id');
@@ -44,7 +47,7 @@ function setup() {
         //Create Control Session
         a = createDiv(); a.class('setmode hl'); a.parent(dv); //Div Mode box a
         //Add Botton and Botton ID
-        let mbtn = createButton('Manual'); mbtn.class('md btn btn-primary my-button'); mbtn.id(`b${i}`); mbtn.parent(a);  mbtns.push(mbtn);
+        let mbtn = createButton('Manual'); mbtn.class('md btn btn-primary my-button text-light'); mbtn.id(`b${i}`); mbtn.parent(a);  mbtns.push(mbtn);
         mbtn.mousePressed(toggle); //Trigger Fn() when press
 
         b = createDiv(); b.class('control hl'); b.parent(dv); //Div Control Content b
@@ -52,22 +55,20 @@ function setup() {
         //Manual Mode
         let man = createDiv(); man.class('man'); man.parent(b); mans.push(man); 
         man.hide();
-        let mON = createButton('W8'); mON.id(`s${i}`); mON.class('mON'); mON.parent(man); mONs.push(mON);
+        let mON = createButton('-'); mON.id(`s${i}`); mON.class('mON'); mON.parent(man); mONs.push(mON);
         mON.mousePressed(onOff);
-
 
         //Auto Mode
         let aut = createDiv(); aut.class('aut'); aut.parent(b); auts.push(aut);
-        let sv = createP(`${i}`); sv.style('margin-top','10px'); sv.parent(aut); svs.push(sv); //sv is slide value
-        let sld = createSlider(0,100,ini[i]); sld.parent(aut); sld.class('sld'); sld.id(`s${i}`); slds.push(sld);
+        let sv = createP(`${i}`); sv.class('h4 text-dark'); sv.style('margin-top','15px'); sv.parent(aut); svs.push(sv); //sv is slide value
+        let sld = createSlider(0,maxs[i],ini[i]); sld.parent(aut); sld.class('sld'); sld.id(`s${i}`); slds.push(sld);
         const sl_ = createDiv(); sl_.class('sl_div'); sl_.parent(aut);
-        let sl_lo = createButton('OFF'); sl_lo.id(`n${i}`); sl_lo.class('sl_btn'); sl_lo.parent(sl_); sl_los.push(sl_lo);
-        let sl_set = createButton('SET'); sl_set.id(`o${i}`); sl_set.class('sl_btn'); sl_set.parent(sl_); sl_sets.push(sl_set);
-        let sl_hi = createButton('ON'); sl_hi.id(`m${i}`); sl_hi.class('sl_btn'); sl_hi.parent(sl_); sl_his.push(sl_hi);
+        let sl_lo = createButton('OFF'); sl_lo.id(`n${i}`); sl_lo.class('sl_btn btn btn-secondary rounded-pill'); sl_lo.parent(sl_); sl_los.push(sl_lo);
+        let sl_set = createButton('SET'); sl_set.id(`o${i}`); sl_set.class('sl_btn btn btn-warning rounded-pill'); sl_set.parent(sl_); sl_sets.push(sl_set);
+        let sl_hi = createButton('ON'); sl_hi.id(`m${i}`); sl_hi.class('sl_btn btn btn-success rounded-pill'); sl_hi.parent(sl_); sl_his.push(sl_hi);
         aut.hide()
         sl_lo.mousePressed(toggleAutoLo); sl_hi.mousePressed(toggleAutoHi); 
         sl_set.mousePressed(setAuto);
-
 
         //Timer Mode
         let tim = createDiv(); tim.class('tim'); tim.parent(b); tims.push(tim); 
@@ -77,40 +78,45 @@ function setup() {
         let tim2 = createDiv(); tim2.class('box'); tim2.parent(tim);
         let tim3 = createDiv(); tim3.class('box'); tim3.parent(tim);
 
-        p = createP('start time'); p.parent(tim1);
-        c = createDiv(); c.class('hline'); c.parent(tim1)
-        //p = createP('Hr'); p.parent(c);
+        //Time box1
+        p = createP('start time'); p.class('h5 textCtrl'); p.parent(tim1);
+        c = createDiv(); c.parent(tim1)
+
         let hr = createSelect(); 
         for (let j=0; j<24; j++) {
             hr.option(`${j}`); 
         }
         hr.parent(c); hrs.push(hr);
-        
-        //p = createP('Min'); p.parent(c);
         let min = createSelect();
         for (let j=0; j<59; j++) {
             min.option(`${j}`); 
         }
         min.parent(c); mins.push(min);
 
+        //Time box2
+        p = createP('duration (mins)'); p.class('h5 textCtrl'); p.parent(tim2);
+        let dura = createInput(); dura.class('dura'); dura.parent(tim2); duras.push(dura);
+        p = createP(''); p.class('textDura'); p.parent(tim2); timerstats.push(p)
+        
+        c = createDiv(); c.class('btnHgroup'); c.parent(tim2)
 
-        p = createP('duration (mins)'); p.parent(tim2);
-        let dura = createInput(); dura.parent(tim2); duras.push(dura);
-        p = createP(''); p.parent(tim2); timerstats.push(p)
-        c = createDiv(); c.class('hline'); c.parent(tim2)
         let submitd = createButton('ON'); submitd.id(`s${i}`); submitd.parent(c); //timeBtns.push(submitd)
-        submitd.mousePressed(setTime);
-        submitd = createButton('OFF'); submitd.id(`f${i}`); submitd.parent(c); //timeBtns.push(submitd1)
+        submitd.class('sl_btn btn btn-warning rounded-pill'); 
         submitd.mousePressed(setTime);
 
-        p = createP('end'); p.parent(tim3);
-        let end = createP(`0:0${i}`); end.parent(tim3); ends.push(end);
+        submitd = createButton('OFF'); submitd.id(`f${i}`); submitd.parent(c); //timeBtns.push(submitd1)
+        submitd.class('sl_btn btn btn-warning rounded-pill'); 
+        submitd.mousePressed(setTime);
+
+        //Time box3
+        p = createP('end'); p.class('h5 textCtrl');p.parent(tim3);
+        let end = createP(`0:0${i}`); end.class('h5 textCtrl'); end.parent(tim3); ends.push(end);
 
         //////Div c
         c = createDiv(); c.class('value hl'); c.parent(dv); //Div val c
-        let cc = createDiv(); cc.class('in-value bg-secondary rounded'); cc.parent(c);
-        p = createP('Value'); p.class('h5 text-light'); p.parent(cc); //add content to c
-        let v = createP(`${i}`); v.class('h5 text-light'); v.parent(cc); vals.push(v); //use i in value will update later
+        let cc = createDiv(); cc.class('in-value bg-secondary rounded pt-4'); cc.parent(c);
+        p = createP('Value'); p.class('h5 text-light');  p.parent(cc); //add content to c
+        let v = createP(`${i}`); v.class('h5 text-light mt-3'); v.parent(cc); vals.push(v); //use i in value will update later
     }
 
 }
@@ -124,7 +130,8 @@ function toggle(){
         this.html('Manual');
         tims[k].hide(); auts[k].hide(); 
         mans[k].show();
-
+        this.class('md btn btn-primary my-button text-light');
+        //Add Botton and Botton ID
         //mode = mode.replaceAt(k, '0')
         device_msgs[k] = 'm,'
 
@@ -132,7 +139,7 @@ function toggle(){
         this.html('Auto'); //<<Auto
         mans[k].hide(); tims[k].hide();
         auts[k].show();
-
+        this.class('md btn my-button text-light aut_color');
         //mode = mode.replaceAt(k, '1')
         device_msgs[k] = 'a,'
 
@@ -140,7 +147,7 @@ function toggle(){
         this.html('Timer'); //<<Timer
         auts[k].hide(); mans[k].hide();
         tims[k].show(); tims[k].style('display','flex');
-        
+        this.class('md btn my-button text-dark tim_color');
         //mode = mode.replaceAt(k, '2')
         device_msgs[k] = 't,'    
     }
@@ -181,10 +188,14 @@ function toggleAutoLo(){
 
     if(this.html() === 'OFF'){
         sl_los[k].html('ON')
+        sl_los[k].class('sl_btn btn btn-success rounded-pill')
         sl_his[k].html('OFF')
+        sl_his[k].class('sl_btn btn btn-secondary rounded-pill')
     }else{
         sl_los[k].html('OFF')
+        sl_los[k].class('sl_btn btn btn-secondary rounded-pill')
         sl_his[k].html('ON')
+        sl_his[k].class('sl_btn btn btn-success rounded-pill')
     }
 }
 function toggleAutoHi(){
@@ -193,12 +204,14 @@ function toggleAutoHi(){
 
     if(this.html() === 'OFF'){
         sl_los[k].html('OFF')
+        sl_los[k].class('sl_btn btn btn-secondary rounded-pill')
         sl_his[k].html('ON')
-
-        sl_his[k].class('')
+        sl_his[k].class('sl_btn btn btn-success rounded-pill')
     }else{
         sl_los[k].html('ON')
+        sl_los[k].class('sl_btn btn btn-success rounded-pill')
         sl_his[k].html('OFF')
+        sl_his[k].class('sl_btn btn btn-secondary rounded-pill')
     }
 }
 
@@ -253,7 +266,7 @@ function setTime(){
 
     if (dur > 0 && dur < 1440) {
         console.log(typeof(dur))
-        timerstats[k].html(this.html())
+        //timerstats[k].html(this.html())
 
         out_msg = out_msg.concat(dur).concat(',')
 
@@ -349,21 +362,26 @@ function onMessageArrived(message) {
             auts[i].hide();
             tims[i].hide();
             mans[i].show();
+            mbtns[i].class('md btn btn-primary my-button text-light');
          } else if (msg_Arr[0] === "a") {
             mbtns[i].html('Auto')
             mans[i].hide();
             tims[i].hide();
             auts[i].show();
-
+            mbtns[i].class('md btn my-button text-light aut_color');
             //set initial auto
             ini[i] = parseInt(msg_Arr[2])
             slds[i].value(parseInt(msg_Arr[2]))
             if (msg_Arr[1] === '0') {
                 sl_los[i].html('OFF')
+                sl_los[i].class('sl_btn btn btn-secondary rounded-pill')
                 sl_his[i].html('ON')
+                sl_his[i].class('sl_btn btn btn-success rounded-pill')
             } else {
                 sl_los[i].html('ON')
+                sl_los[i].class('sl_btn btn btn-success rounded-pill')
                 sl_his[i].html('OFF')
+                sl_his[i].class('sl_btn btn btn-secondary rounded-pill')
             }
             
 
@@ -373,14 +391,12 @@ function onMessageArrived(message) {
             auts[i].hide();
             mans[i].hide();
             tims[i].show(); tims[i].style('display','flex');
-
+            mbtns[i].class('md btn my-button text-dark tim_color');
             //set initial timers
             if (msg_Arr[1] === '1') {
                 timerstats[i].html('ON')
-                //timeBtns[i].html('ON')
             } else {
                 timerstats[i].html('OFF')
-                //timeBtns[i].html('OFF')
             }
 
             hrs[i].value(parseInt(msg_Arr[2]))

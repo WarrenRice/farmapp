@@ -21,13 +21,15 @@ async function chartIt(){
                 fill: 0,
                 backgroundColor: ['rgba(255, 99, 132, 0.2)'],
                 borderColor: ['rgba(255, 99, 132, 1)'],
-                borderWidth: 1,
+                borderWidth: 2,
             }],
         },
 
         options: {
             scales: {
                 y: {
+                    max: 36,
+                    min: 20,
                     ticks: {
                         callback: function(value, index, values) {
                             return value.toFixed(2) + '\u00B0C';
@@ -50,7 +52,7 @@ async function chartIt(){
                 fill: 0,
                 backgroundColor: ['rgba(99, 255, 132, 0.2)'],
                 borderColor: ['rgba(9, 255, 132, 1)'],
-                borderWidth: 1,
+                borderWidth: 2,
             }],
         },
 
@@ -79,13 +81,15 @@ async function chartIt(){
                 fill: 0,
                 backgroundColor: ['rgba(99, 99, 255, 0.2)'],
                 borderColor: ['rgba(99,99, 255, 1)'],
-                borderWidth: 1,
+                borderWidth: 2,
             }],
         },
 
         options: {
             scales: {
                 y: {
+                    max: 1000,
+                    min: 0,
                     ticks: {
                         callback: function(value, index, values) {
                             return value.toFixed(2) + 'lx';
@@ -108,13 +112,15 @@ async function chartIt(){
                 fill: 0,
                 backgroundColor: ['rgba(99, 99, 99, 0.2)'],
                 borderColor: ['rgba(99, 99, 99, 1)'],
-                borderWidth: 1,
+                borderWidth: 2,
             }],
         },
 
         options: {
             scales: {
                 y: {
+                    max: 2000,
+                    min: 0,
                     ticks: {
                         callback: function(value, index, values) {
                             return value.toFixed(2);
