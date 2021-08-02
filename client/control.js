@@ -35,11 +35,12 @@ function setup() {
     noCanvas();
     for (let i = 0; i <4; i++){
         //Create Div for control Bar
-        let dv = createDiv();
-        let p = createP(paralist[i]); p.parent('#mid_id'); //create P as name parameter and parent to #middle_id
-        p.style('text-align', 'center');
-        dv.class('para');
+        let p = createDiv(paralist[i]); p.parent('#mid_id'); //create P as name parameter and parent to #middle_id
+        p.class('paralist w-25 mx-auto rounded-top shadow'); 
+
+        let dv = createDiv(); dv.class('para rounded shadow');
         dv.parent('#mid_id');
+
         //Create Control Session
         a = createDiv(); a.class('setmode hl'); a.parent(dv); //Div Mode box a
         //Add Botton and Botton ID
@@ -107,8 +108,9 @@ function setup() {
 
         //////Div c
         c = createDiv(); c.class('value hl'); c.parent(dv); //Div val c
-        p = createP('Value'); p.parent(c); //add content to c
-        let v = createP(`${i}`); v.parent(c); vals.push(v); //use i in value will update later
+        let cc = createDiv(); cc.class('in-value bg-secondary rounded'); cc.parent(c);
+        p = createP('Value'); p.class('h5 text-light'); p.parent(cc); //add content to c
+        let v = createP(`${i}`); v.class('h5 text-light'); v.parent(cc); vals.push(v); //use i in value will update later
     }
 
 }

@@ -32,10 +32,10 @@ function onMessageArrived(message) {
     data = JSON.parse(message.payloadString);
 
     console.log(data);
-    document.getElementById("p00").textContent = data.temperature + " C";
-    document.getElementById("p01").textContent = data.humidity +"%";
-    document.getElementById("p02").textContent = data.light +" lux";
-    document.getElementById("p04").textContent = data.pressure +" Pa";
+    document.getElementById("p00").textContent = data.temperature;
+    document.getElementById("p01").textContent = data.humidity;
+    document.getElementById("p02").textContent = data.light;
+    document.getElementById("p04").textContent = data.pressure;
     if (data.water < 300) {
       document.getElementById("p03").textContent = "DRY";
     } else {
