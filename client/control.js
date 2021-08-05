@@ -63,9 +63,9 @@ function setup() {
         let sv = createP(`${i}`); sv.class('h4 text-dark'); sv.style('margin-top','15px'); sv.parent(aut); svs.push(sv); //sv is slide value
         let sld = createSlider(0,maxs[i],ini[i]); sld.parent(aut); sld.class('sld'); sld.id(`s${i}`); slds.push(sld);
         const sl_ = createDiv(); sl_.class('sl_div'); sl_.parent(aut);
-        let sl_lo = createButton('OFF'); sl_lo.id(`n${i}`); sl_lo.class('sl_btn btn btn-secondary rounded-pill'); sl_lo.parent(sl_); sl_los.push(sl_lo);
-        let sl_set = createButton('SET'); sl_set.id(`o${i}`); sl_set.class('sl_btn btn btn-warning rounded-pill'); sl_set.parent(sl_); sl_sets.push(sl_set);
-        let sl_hi = createButton('ON'); sl_hi.id(`m${i}`); sl_hi.class('sl_btn btn btn-success rounded-pill'); sl_hi.parent(sl_); sl_his.push(sl_hi);
+        let sl_lo = createButton('OFF'); sl_lo.id(`n${i}`); sl_lo.class('sl_btn btn btn-secondary rounded-pill sh'); sl_lo.parent(sl_); sl_los.push(sl_lo);
+        let sl_set = createButton('SET'); sl_set.id(`o${i}`); sl_set.class('sl_btn btn btn-warning rounded-pill sh'); sl_set.parent(sl_); sl_sets.push(sl_set);
+        let sl_hi = createButton('ON'); sl_hi.id(`m${i}`); sl_hi.class('sl_btn btn btn-success rounded-pill sh'); sl_hi.parent(sl_); sl_his.push(sl_hi);
         aut.hide()
         sl_lo.mousePressed(toggleAutoLo); sl_hi.mousePressed(toggleAutoHi); 
         sl_set.mousePressed(setAuto);
@@ -101,11 +101,11 @@ function setup() {
         c = createDiv(); c.class('btnHgroup'); c.parent(tim2)
 
         let submitd = createButton('ON'); submitd.id(`s${i}`); submitd.parent(c); //timeBtns.push(submitd)
-        submitd.class('sl_btn btn btn-warning rounded-pill'); 
+        submitd.class('sl_btn btn btn-warning rounded-pill sh'); 
         submitd.mousePressed(setTime);
 
         submitd = createButton('OFF'); submitd.id(`f${i}`); submitd.parent(c); //timeBtns.push(submitd1)
-        submitd.class('sl_btn btn btn-warning rounded-pill'); 
+        submitd.class('sl_btn btn btn-warning rounded-pill sh'); 
         submitd.mousePressed(setTime);
 
         //Time box3
@@ -130,7 +130,7 @@ function toggle(){
         this.html('Manual');
         tims[k].hide(); auts[k].hide(); 
         mans[k].show();
-        this.class('md btn btn-primary my-button text-light');
+        this.class('md btn btn-primary my-button text-light sh');
         //Add Botton and Botton ID
         //mode = mode.replaceAt(k, '0')
         device_msgs[k] = 'm,'
@@ -139,7 +139,7 @@ function toggle(){
         this.html('Auto'); //<<Auto
         mans[k].hide(); tims[k].hide();
         auts[k].show();
-        this.class('md btn my-button text-light aut_color');
+        this.class('md btn my-button text-light aut_color sh');
         //mode = mode.replaceAt(k, '1')
         device_msgs[k] = 'a,'
 
@@ -147,7 +147,7 @@ function toggle(){
         this.html('Timer'); //<<Timer
         auts[k].hide(); mans[k].hide();
         tims[k].show(); tims[k].style('display','flex');
-        this.class('md btn my-button text-dark tim_color');
+        this.class('md btn my-button text-dark tim_color sh');
         //mode = mode.replaceAt(k, '2')
         device_msgs[k] = 't,'    
     }
@@ -188,30 +188,31 @@ function toggleAutoLo(){
 
     if(this.html() === 'OFF'){
         sl_los[k].html('ON')
-        sl_los[k].class('sl_btn btn btn-success rounded-pill')
+        sl_los[k].class('sl_btn btn btn-success rounded-pill sh')
         sl_his[k].html('OFF')
-        sl_his[k].class('sl_btn btn btn-secondary rounded-pill')
+        sl_his[k].class('sl_btn btn btn-secondary rounded-pill sh')
     }else{
         sl_los[k].html('OFF')
-        sl_los[k].class('sl_btn btn btn-secondary rounded-pill')
+        sl_los[k].class('sl_btn btn btn-secondary rounded-pill sh')
         sl_his[k].html('ON')
-        sl_his[k].class('sl_btn btn btn-success rounded-pill')
+        sl_his[k].class('sl_btn btn btn-success rounded-pill sh')
     }
 }
+
 function toggleAutoHi(){
     let k = this.id(); 
     k = k.substring(1); //console.log(k); console.log(typeof(k));
 
     if(this.html() === 'OFF'){
         sl_los[k].html('OFF')
-        sl_los[k].class('sl_btn btn btn-secondary rounded-pill')
+        sl_los[k].class('sl_btn btn btn-secondary rounded-pill sh')
         sl_his[k].html('ON')
-        sl_his[k].class('sl_btn btn btn-success rounded-pill')
+        sl_his[k].class('sl_btn btn btn-success rounded-pill sh')
     }else{
         sl_los[k].html('ON')
-        sl_los[k].class('sl_btn btn btn-success rounded-pill')
+        sl_los[k].class('sl_btn btn btn-success rounded-pill sh')
         sl_his[k].html('OFF')
-        sl_his[k].class('sl_btn btn btn-secondary rounded-pill')
+        sl_his[k].class('sl_btn btn btn-secondary rounded-pill sh')
     }
 }
 
@@ -219,9 +220,9 @@ function setAuto(){
     let k = this.id();  k = k.substring(1);
     let out_msg
     if (sl_los[k].html() === 'OFF') {
-        out_msg = 'a,0,'
-    } else {
         out_msg = 'a,1,'
+    } else {
+        out_msg = 'a,0,'
     }
     out_msg=out_msg.concat(slds[k].value())
 
@@ -373,15 +374,15 @@ function onMessageArrived(message) {
             ini[i] = parseInt(msg_Arr[2])
             slds[i].value(parseInt(msg_Arr[2]))
             if (msg_Arr[1] === '0') {
-                sl_los[i].html('OFF')
-                sl_los[i].class('sl_btn btn btn-secondary rounded-pill')
-                sl_his[i].html('ON')
-                sl_his[i].class('sl_btn btn btn-success rounded-pill')
-            } else {
                 sl_los[i].html('ON')
-                sl_los[i].class('sl_btn btn btn-success rounded-pill')
+                sl_los[i].class('sl_btn btn btn-success rounded-pill sh')
                 sl_his[i].html('OFF')
-                sl_his[i].class('sl_btn btn btn-secondary rounded-pill')
+                sl_his[i].class('sl_btn btn btn-secondary rounded-pill sh')
+            } else {
+                sl_los[i].html('OFF')
+                sl_los[i].class('sl_btn btn btn-secondary rounded-pill sh')
+                sl_his[i].html('ON')
+                sl_his[i].class('sl_btn btn btn-success rounded-pill sh')
             }
             
 

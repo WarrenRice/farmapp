@@ -48,7 +48,9 @@ h2 {
 .hl:hover {
     background-color: yellow;
 }
-
+.sh:hover {
+    box-shadow: 0px 0px 10px yellow;
+}
 
 .setmode {
     background-color: plum;

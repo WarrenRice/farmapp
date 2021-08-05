@@ -48,9 +48,16 @@ function onMessageArrived(message) {
     console.log(msg_Arr)
     document.getElementById(`m0${i}`).textContent = covert2text(msg_Arr[0]);
 
-    document.getElementById(`c0${i}`).textContent = covert2text(msg_Arr[1]);
-    document.getElementById(`c0${i}`).className = covert2style(msg_Arr[1])
+
   }
+
+  if (message.destinationName === "DeviceStatus") {
+    for (i = 0; i<4;i++) {
+      document.getElementById(`c0${i}`).textContent = covert2text(msg_in[i]);
+      document.getElementById(`c0${i}`).className = covert2style(msg_in[i])
+    }
+  }
+
 
 }
 
