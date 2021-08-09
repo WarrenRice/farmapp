@@ -119,7 +119,7 @@ async function chartIt(){
         options: {
             scales: {
                 y: {
-                    max: 2000,
+                    max: 3000,
                     min: 0,
                     ticks: {
                         callback: function(value, index, values) {
